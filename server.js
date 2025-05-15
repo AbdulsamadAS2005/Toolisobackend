@@ -25,8 +25,3 @@ app.post('/gemini',async(req,res)=>{
     res.send(data);
     
 })
-
-
-app.listen(5000,()=>{
-    console.log('Server running on http://localhost:5000');
-})
