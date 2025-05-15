@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.post('/gemini',async(req,res)=>{
     let prompt=req.body.prompt;
 
-    let response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.API_KEY}`,
+    let response=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAAPa9EnCi5K7_xSEfqPMxogUqlyuy9ns4',
         {
             method:"POST",
             headers:{
@@ -25,3 +25,6 @@ app.post('/gemini',async(req,res)=>{
     res.send(data);
     
 })
+
+
+module.exports = app;
