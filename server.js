@@ -30,5 +30,22 @@ app.post('/gemini',async(req,res)=>{
     
 })
 
+app.post('/paraphrase',async(req,res)=>{
+    let {prompt}=req.body;
+    let response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAAPa9EnCi5K7_xSEfqPMxogUqlyuy9ns4",
+        {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }]
+            })
+        }
+    )
+     const data=await response.json();
+     res.status(200).send(data);
+})
+
+app.listen(4000);
+
 
 module.exports = app;
