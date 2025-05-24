@@ -7,6 +7,10 @@ let app=express();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get('/',async(req,res)=>{
+    res.send("tooliso Backend");
+})
+
 app.post('/gemini',async(req,res)=>{
     let prompt=req.body.prompt;
 
