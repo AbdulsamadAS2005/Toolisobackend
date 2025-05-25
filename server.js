@@ -45,7 +45,26 @@ app.post('/paraphrase',async(req,res)=>{
      res.status(200).send(data);
 })
 
+
+app.post('/grammerFixer',async(req,res)=>{
+
+   try {
+     let {grammerPrompt}=req.body;
+    let response=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAAPa9EnCi5K7_xSEfqPMxogUqlyuy9ns4',{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            contents: [{ parts: [{ text: grammerPrompt }] }]
+        })
+    })
+    const data=await response.json();
+
+    res.status(200).send(data);
+   } catch (error) {
+    res.status(500).send({ error: 'Failed to process grammar fixing.' });
+   }
+})
+
+
 app.listen(4000);
-
-
 module.exports = app;
