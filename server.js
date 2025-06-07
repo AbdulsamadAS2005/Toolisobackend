@@ -116,6 +116,10 @@ const userSchema = new mongoose.Schema({
     country: String,
     email: String,
     password: String,
+    hasPurchased: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 const User = mongoose.model("UserInfo", userSchema);
@@ -232,6 +236,31 @@ app.get('/allusers',async(req,res)=>{
             message: "Failed to fetch users",
             error: error.message
         });
+    }
+})
+
+app.post('/setNewPassword',async(req,res)=>{
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required." });
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            { email },
+            { password: password }, // plain text password
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "No account found with this email." });
+        }
+
+        res.status(200).json({ message: "Password updated successfully." });
+    } catch (error) {
+        console.error("Error updating password:", error);
+        res.status(500).json({ message: "Internal server error." });
     }
 })
 
