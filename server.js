@@ -151,6 +151,7 @@ app.post('/addUser', async (req, res) => {
                     id: newUser._id,
                     name: newUser.name,
                     email: newUser.email,
+                    hasPurchased:hasPurchased
                 },
             });
         }
