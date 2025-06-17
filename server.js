@@ -265,37 +265,23 @@ app.post('/setNewPassword',async(req,res)=>{
 })
 
 app.post('/getSingleUser', async (req, res) => {
-    try {
-        const { id } = req.body;
-        
-        // Validate the ID exists
-        if (!id) {
-            return res.status(400).json({ message: 'User ID is required' });
-        }
-
-        // Find user by ID - corrected query
-        const user = await User.findById(id);  // Use findById instead of findOne
-        
-        // Check if user exists
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Return user data (exclude sensitive info like password)
-        const userData = {
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            hasPurchased:hasPurchased
-            // include other non-sensitive fields
-        };
-        
-        res.status(200).json(userData);
+    const {id}=req.body;
+   const users = await User.findById(id);
+        try{
+        res.status(200).json({
+            success: true,
+            users: users
+        });
         
     } catch (error) {
-        console.error('Error fetching user:', error);
-    }
-});
+        console.error("Error fetching users:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch user",
+            error: error.message
+        });
+       
+}});
 
 app.listen(4000);
 module.exports = app;
