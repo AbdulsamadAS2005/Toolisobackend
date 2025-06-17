@@ -264,6 +264,48 @@ app.post('/setNewPassword',async(req,res)=>{
     }
 })
 
+app.post('/getSingleUser', async (req, res) => {
+    try {
+        const { id } = req.body;
+        
+        // Validate the ID exists
+        if (!id) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+
+        // Find user by ID - corrected query
+        const user = await User.findById(id);  // Use findById instead of findOne
+        
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Return user data (exclude sensitive info like password)
+        const userData = {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            hasPurchased:hasPurchased
+            // include other non-sensitive fields
+        };
+        
+        res.status(200).json(userData);
+        
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        
+        // More specific error responses
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'Invalid user ID format' });
+        }
+        
+        res.status(500).json({ 
+            message: 'Server error while fetching user',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+});
 
 app.listen(4000);
 module.exports = app;
