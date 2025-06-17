@@ -294,16 +294,6 @@ app.post('/getSingleUser', async (req, res) => {
         
     } catch (error) {
         console.error('Error fetching user:', error);
-        
-        // More specific error responses
-        if (error.name === 'CastError') {
-            return res.status(400).json({ message: 'Invalid user ID format' });
-        }
-        
-        res.status(500).json({ 
-            message: 'Server error while fetching user',
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
     }
 });
 
